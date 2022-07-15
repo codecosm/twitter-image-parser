@@ -1,0 +1,16 @@
+{
+	"name": "twitter-image-parser",
+	"version": "1.0.0",
+	"description": "script that continuously checks a twitter profile for new posts containing images and posts them to a specified discord channel. probably against the twitter tos.",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "paracosm",
+	"license": "ISC",
+	"dependencies": {
+		"discord.js": "^13.8.1",
+		"dotenv": "^16.0.1",
+		"puppeteer": "^15.4.0"
+	}
+}
