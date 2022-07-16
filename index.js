@@ -35,7 +35,7 @@ async function update() {
 		const deserializedCookies = JSON.parse(cookies);
 		await page.setCookie(...deserializedCookies);
 
-		await page.goto(TWITTER_PROFILE);
+		await page.goto(process.env.TWITTER_PROFILE);
 
 		await page.waitForTimeout(3000);
 
@@ -51,7 +51,7 @@ async function update() {
 			fs.readFile('./tweets.txt', 'utf8', async (err, data) => {
 				imageArray.forEach((image) => {
 					if (!data.includes(image)) {
-						client.channels.cache.get(DISCORD_CHANNEL).send(image);
+						client.channels.cache.get(process.env.DISCORD_CHANNEL).send(image);
 						fs.appendFile('./tweets.txt', `${image}\n`, (err) => {});
 						console.log(`Updated with ${image}!`);
 					}
@@ -61,7 +61,7 @@ async function update() {
 			fs.writeFile('./tweets.txt', '', (err) => {
 				setTimeout(() => {
 					imageArray.forEach((image) => {
-						client.channels.cache.get(DISCORD_CHANNEL).send(image);
+						client.channels.cache.get(process.env.DISCORD_CHANNEL).send(image);
 						fs.appendFile('./tweets.txt', `${image}\n`, (err) => {});
 						console.log(`Updated with ${image}!`);
 					});
@@ -84,4 +84,4 @@ client.on('ready', () => {
 	update();
 });
 
-client.login(DISCORD_TOKEN);
+client.login(process.env.DISCORD_TOKEN);

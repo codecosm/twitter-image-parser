@@ -17,7 +17,7 @@ async function refresh() {
 	try {
 		await page.goto('https://twitter.com/login');
 		await page.waitForTimeout(1500);
-		await page.type('input', TWITTER_USERNAME);
+		await page.type('input', process.env.TWITTER_USERNAME);
 		await page.waitForTimeout(1000);
 		await page.click('[role="button"]');
 		await page.waitForTimeout(1000);
@@ -25,11 +25,11 @@ async function refresh() {
 		await page.waitForTimeout(1000);
 		await page.click('[data-testid="loginButton"]');
 		await page.waitForTimeout(1000);
-		await page.type('input', TWITTER_USERNAME);
+		await page.type('input', process.env.TWITTER_USERNAME);
 		await page.waitForTimeout(1000);
 		await page.click('[role="button"][style="border-color: rgba(0, 0, 0, 0);"]');
 		await page.waitForTimeout(1000);
-		await page.type('.r-30o5oe', TWITTER_PASSWORD);
+		await page.type('.r-30o5oe', process.env.TWITTER_PASSWORD);
 		await page.waitForTimeout(1000);
 		await page.click('[role="button"][style="border-color: rgba(0, 0, 0, 0);"][data-testid="LoginForm_Login_Button"]');
 		await page.waitForTimeout(1000);
