@@ -2,19 +2,21 @@ const puppeteer = require('puppeteer');
 const fs = require('fs');
 require('dotenv').config();
 
-const browser = await puppeteer.launch({
-	headless: true,
-	args: ['--no-sandbox'],
-	defaultViewport: {
-		width: 960,
-		height: 960
-	}
-});
 
-const page = await browser.newPage();
 
 async function refresh() {
 	try {
+		const browser = await puppeteer.launch({
+			headless: true,
+			args: ['--no-sandbox'],
+			defaultViewport: {
+				width: 960,
+				height: 960
+			}
+		});
+		
+		const page = await browser.newPage();
+		
 		await page.goto('https://twitter.com/login');
 		await page.waitForTimeout(1500);
 		await page.type('input', process.env.TWITTER_USERNAME);
