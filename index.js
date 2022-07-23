@@ -29,11 +29,6 @@ async function update() {
 			return;
 		}
 
-		const channel = client.channels.cache.get(process.env.DISCORD_CHANNEL);
-
-		const thread = channel.threads.cache.find((x) => x.name === 'pphard');
-		if (thread.joinable) await thread.join();
-
 		const page = await browser.newPage();
 
 		const cookies = fs.readFileSync('cookies.json', 'utf8');
@@ -56,7 +51,7 @@ async function update() {
 			fs.readFile('./tweets.txt', 'utf8', async (err, data) => {
 				imageArray.forEach((image) => {
 					if (!data.includes(image)) {
-						thread.send(image);
+						client.channels.cache.get(process.env.DISCORD_CHANNEL).send(image);
 						fs.appendFile('./tweets.txt', `${image}\n`, (err) => {});
 						console.log(`Updated with ${image}!`);
 					}
@@ -66,7 +61,7 @@ async function update() {
 			fs.writeFile('./tweets.txt', '', (err) => {
 				setTimeout(() => {
 					imageArray.forEach((image) => {
-						thread.send(image);
+						client.channels.cache.get(process.env.DISCORD_CHANNEL).send(image);
 						fs.appendFile('./tweets.txt', `${image}\n`, (err) => {});
 						console.log(`Updated with ${image}!`);
 					});
