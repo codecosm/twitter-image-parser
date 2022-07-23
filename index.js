@@ -9,9 +9,18 @@ const client = new Discord.Client({
 });
 
 async function update() {
+	const browser = await puppeteer.launch({
+		headless: true,
+		args: ['--no-sandbox'],
+		defaultViewport: {
+			width: 960,
+			height: 960
+		}
+	});
+
 	try {
 		if (!fs.existsSync('cookies.json')) {
-			console.log('cookies.json file not found. Please run `refresh_cookies.json` to set cookies first.');
+			console.log('cookies.json file not found. Please run `refresh_cookies.js` to set cookies first.');
 			return;
 		} else if (!fs.existsSync('.env')) {
 			console.log(
@@ -20,14 +29,10 @@ async function update() {
 			return;
 		}
 
-		const browser = await puppeteer.launch({
-			headless: true,
-			args: ['--no-sandbox'],
-			defaultViewport: {
-				width: 960,
-				height: 960
-			}
-		});
+		const channel = client.channels.cache.get(process.env.DISCORD_CHANNEL);
+
+		const thread = channel.threads.cache.find((x) => x.name === 'pphard');
+		if (thread.joinable) await thread.join();
 
 		const page = await browser.newPage();
 
@@ -51,7 +56,7 @@ async function update() {
 			fs.readFile('./tweets.txt', 'utf8', async (err, data) => {
 				imageArray.forEach((image) => {
 					if (!data.includes(image)) {
-						client.channels.cache.get(process.env.DISCORD_CHANNEL).send(image);
+						thread.send(image);
 						fs.appendFile('./tweets.txt', `${image}\n`, (err) => {});
 						console.log(`Updated with ${image}!`);
 					}
@@ -61,7 +66,7 @@ async function update() {
 			fs.writeFile('./tweets.txt', '', (err) => {
 				setTimeout(() => {
 					imageArray.forEach((image) => {
-						client.channels.cache.get(process.env.DISCORD_CHANNEL).send(image);
+						thread.send(image);
 						fs.appendFile('./tweets.txt', `${image}\n`, (err) => {});
 						console.log(`Updated with ${image}!`);
 					});
